@@ -1,7 +1,8 @@
 import React from "react";
+import Algos from "./Algos";
 
 function App() {
-  return <h1>hello world!</h1>;
+  return <Algos />;
 }
 
 export default App;
