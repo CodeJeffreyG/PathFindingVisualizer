@@ -1,0 +1,21 @@
+.gridContainer {
+  width: 100%;
+  height: 100vh;
+}
+
+.rowContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.node {
+  width: 5%;
+  height: 5rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: rgb(71 85 105);
+}
