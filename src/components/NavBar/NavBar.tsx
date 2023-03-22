@@ -3,9 +3,9 @@ import "./navbar.css";
 
 const NavBar = () => {
   return (
-    <nav className="not-mobile">
+    <nav>
       <div>Path-Finding Visualizer</div>
-      <ul className="tablet">
+      <ul>
         <li>placeholder</li>
         <li>placeholder</li>
         <li>placeholder</li>
