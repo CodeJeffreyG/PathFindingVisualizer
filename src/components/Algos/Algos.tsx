@@ -1,17 +1,29 @@
 import React from "react";
 import "./algos.css";
 
+interface Node {
+  isWall: boolean;
+  isStart: boolean;
+  isFinish: boolean;
+  row: number | null;
+  col: number | null;
+}
+
 const Algos = () => {
-  let grid: any = [];
-  const node = {
+
+  const grid: Array<Node> = [];
+
+  const node: Node = {
     isWall: false,
     isStart: false,
     isFinish: false,
+    row: null,
+    col: null,
   };
 
   const createGrid = () => {
     for (let row = 0; row < 9; row += 1) {
-      let elementsArray = [];
+      let elementsArray: Array<Node> | any = [];
 
       for (let col = 0; col < 25; col += 1) {
         let rowAndCol = `${row},${col}`;
@@ -29,7 +41,7 @@ const Algos = () => {
 
   const displayGrid = grid.map((row: any) => (
     <div className="rowContainer">
-      {row.map((col: any) => (
+      {row.map((col: {}) => (
         <div className="node"></div>
       ))}
     </div>
