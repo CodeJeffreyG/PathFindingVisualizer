@@ -1,5 +1,5 @@
 import React from "react";
-import "./algos.css";
+import "./grid.css";
 
 interface Node {
   isWall: boolean;
@@ -42,7 +42,7 @@ const Algos = () => {
   const displayGrid = grid.map((row: any) => (
     <div className="rowContainer">
       {row.map((col: {}) => (
-        <div className="node"></div>
+        <div className="node" ></div>
       ))}
     </div>
   ));
