@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import ViewGrid from "./ViewGrid";
 import "./grid.css";
+
+// start 1 finish 1 wall *
 
 interface Node {
   isWall: boolean;
@@ -10,8 +13,9 @@ interface Node {
 }
 
 const Algos = () => {
+  const [start, setStart] = useState("");
 
-  const grid: Array<Node> = [];
+  let grid: Array<Node> = [];
 
   const node: Node = {
     isWall: false,
@@ -27,25 +31,20 @@ const Algos = () => {
 
       for (let col = 0; col < 25; col += 1) {
         let rowAndCol = `${row},${col}`;
-        elementsArray.push({ ...node, row: row, col: col });
+        if (row === 4 && col === 4)
+          elementsArray.push({ ...node, row: row, col: col, isStart: true });
+        else if (row === 4 && col === 21)
+          elementsArray.push({ ...node, row: row, col: col, isFinish: true });
+        else elementsArray.push({ ...node, row: row, col: col });
       }
+
       grid.push(elementsArray);
     }
   };
 
-  const randomNumber = () => {
-    return Math.floor(Math.random() * 100 + 1);
-  };
-
   createGrid();
 
-  const displayGrid = grid.map((row: any) => (
-    <div className="rowContainer">
-      {row.map((col: {}) => (
-        <div className="node" ></div>
-      ))}
-    </div>
-  ));
+  const displayGrid = <ViewGrid grid={grid} />;
 
   return <div className="gridContainer">{displayGrid}</div>;
 };
