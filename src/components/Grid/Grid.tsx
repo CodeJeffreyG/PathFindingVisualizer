@@ -30,10 +30,9 @@ const Algos = () => {
       let elementsArray: Array<Node> | any = [];
 
       for (let col = 0; col < 25; col += 1) {
-        let rowAndCol = `${row},${col}`;
         if (row === 4 && col === 4)
           elementsArray.push({ ...node, row: row, col: col, isStart: true });
-        else if (row === 4 && col === 21)
+        else if (row === 4 && col === 20)
           elementsArray.push({ ...node, row: row, col: col, isFinish: true });
         else elementsArray.push({ ...node, row: row, col: col });
       }

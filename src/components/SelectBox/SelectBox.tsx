@@ -22,7 +22,7 @@ const Speed = () => {
     { value: "fast", label: "Fast" },
   ];
 
-  return <Select options={options} placeholder="Speed" />;
+  return <Select options={options} placeholder="Speed" className="speed-menu"/>;
 };
 
 export { Algos, Speed };
