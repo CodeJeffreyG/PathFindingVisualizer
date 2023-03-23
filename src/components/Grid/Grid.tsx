@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import ViewGrid from "./ViewGrid";
 import "./grid.css";
 
-// start 1 finish 1 wall *
-
 interface Node {
   isWall: boolean;
   isStart: boolean;
@@ -12,10 +10,8 @@ interface Node {
   col: number | null;
 }
 
-const Algos = () => {
-  const [start, setStart] = useState("");
-
-  let grid: Array<Node> = [];
+const Algos: React.FC = () => {
+  let grid: Array<Array<Node>> = [];
 
   const node: Node = {
     isWall: false,
@@ -27,7 +23,7 @@ const Algos = () => {
 
   const createGrid = () => {
     for (let row = 0; row < 9; row += 1) {
-      let elementsArray: Array<Node> | any = [];
+      let elementsArray: Array<Node> = [];
 
       for (let col = 0; col < 25; col += 1) {
         if (row === 4 && col === 4)
@@ -43,7 +39,7 @@ const Algos = () => {
 
   createGrid();
 
-  const displayGrid = <ViewGrid grid={grid} />;
+  const displayGrid: React.ReactElement = <ViewGrid grid={grid} />;
 
   return <div className="gridContainer">{displayGrid}</div>;
 };

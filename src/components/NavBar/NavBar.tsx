@@ -2,7 +2,7 @@ import React from "react";
 import "./navbar.css";
 import { Algos, Speed } from "../SelectBox/SelectBox";
 
-const NavBar = () => {
+const NavBar: React.FC = () => {
   return (
     <nav>
       <div>Path-Finding Visualizer</div>
