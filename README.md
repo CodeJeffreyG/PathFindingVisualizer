@@ -1,41 +1,23 @@
 Pathfinding Visualizer
-This is a pathfinding visualizer tool built with React. The tool visualizes the process of finding the shortest path between a start node and a finish node using Depth-First Search algorithm.
+Pathfinding Visualizer is a web application that visualizes the process of finding the shortest path between a start node and an end node on a grid. The grid is made up of rows and columns, and each cell on the grid represents a node. Each node can be of different types, indicated by different colors on the UI. For example, isWall: true makes the node black.
+
+Currently, the only available algorithm for finding the shortest path is Depth-First Search (DFS). Other algorithms, such as Breadth-First Search (BFS), will be added soon.
 
 Installation
-Make sure you have Node.js and npm installed on your machine. You can download them from here.
+To run the application locally, you'll need to have Node.js and npm installed on your machine. Once you've installed Node.js, follow these steps:
 
-Clone the repository to your local machine.
-
-bash
-Copy code
-git clone https://github.com/your-username/pathfinding-visualizer.git
-Navigate to the project directory.
-bash
-Copy code
-cd pathfinding-visualizer
-Install the dependencies using npm.
-bash
-Copy code
-npm install
-Start the application.
-bash
-Copy code
-npm start
-Open the app in your browser.
-bash
-Copy code
-http://localhost:3000
+Clone this repository to your local machine.
+Navigate to the project directory in your terminal.
+Run npm install to install the necessary dependencies.
+Run npm start to start the application on localhost:3000.
 Usage
-Choose a start node and a finish node by clicking on the corresponding squares in the grid.
-
-Add barriers or walls to the grid by clicking on the squares you want to turn into walls.
-
-Click the "Visualize DFS" button to visualize the Depth-First Search algorithm.
-
-Watch the visualization of the algorithm in action as it finds the shortest path between the start node and finish node.
+Once the application is running, you can click and drag on the grid to create walls or move the start and end nodes. Pressing the "Visualize" button will run the DFS algorithm to find the shortest path between the start and end nodes, and the path will be displayed in yellow. Pressing "Clear" will reset the grid to its original state.
 
 Future Updates
-In future updates, we plan to add additional algorithms such as Breadth-First Search and A* to give users more options for finding the shortest path. We also plan to add additional features such as the ability to adjust the speed of the algorithm and the ability to generate random mazes for the grid. Stay tuned for updates!
+In future updates, more pathfinding algorithms will be added to the application. Additionally, users will be able to customize the grid size and node colors.
+
+Contributing
+Contributions to this project are welcome! If you find a bug or have an idea for a new feature, please open an issue or submit a pull request.
 
 License
-This project is licensed under the terms of the MIT license.
+This project is licensed under the MIT License - see the LICENSE.md file for details.
