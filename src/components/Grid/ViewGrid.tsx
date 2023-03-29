@@ -20,7 +20,7 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
   const [viewGrid, setViewGrid] = useState(grid);
   const [currentNode, setCurrentNode] = useState<any>({
     isWall: false,
-    isStart: false,
+    isStart: true,
     isFinish: false,
     row: 4,
     col: 4,
@@ -49,6 +49,7 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
       setCurrentNode(node);
       setMouseClick(true);
     }
+    console.log(node);
   };
 
   const mouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

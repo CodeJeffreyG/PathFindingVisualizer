@@ -11,17 +11,17 @@ const Dfs = (grid: any, setGrid: any, startNode: any) => {
     let tempGrid = [...grid];
     setGrid(tempGrid);
 
-    for (let i = -1; i <= 1; i += 1)
-      for (let j = -1; j <= 1; j += 1)
-        if (check(currentNode.row + i, currentNode.col + j, grid)) {
+    for (let i = 0; i <= 1; i += 1)
+      for (let j = 0; j <= 1; j += 1)
+        if (check(currentNode.row + i, currentNode.col + j, grid) || grid[currentNode.row + i][currentNode.col + j].isFinish) {
           //   console.log(grid[currentNode.row + i][currentNode.col + j]);
           stack.push(grid[currentNode.row + i][currentNode.col + j]);
         }
+    console.log(currentNode);
   }
 };
 
 const check = (row: number, col: number, grid: any) => {
-  console.log(row, col);
   let inbounds = row >= 0 && row <= 8 && col >= 0 && col < 25;
 
   if (inbounds)
