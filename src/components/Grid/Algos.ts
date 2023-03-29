@@ -31,20 +31,23 @@ const Dfs = (
       }
     }
 
-    console.log(currentNode);
+    // console.log(currentNode);
   }
 };
 
-const check = (row: number, col: number, grid: Array<Array<Node>>): boolean => {
-  if (grid[row][col] === undefined) return false;
-  const inbounds = row >= 0 && row <= 7 && col >= 0 && col <= 25;
+const check = (
+  row: number,
+  col: number,
+  grid: Array<Array<Node>>
+): boolean | void => {
+  if (grid[row][col] === undefined) console.log("it fuckin broke", row, col);
+  const inbounds = row >= 0 && row < 8 && col >= 0 && col < 26;
   const correctCriteria =
     !grid[row][col].isWall &&
     !grid[row][col].isStart &&
     !grid[row][col].isVisited;
 
   if (inbounds && correctCriteria) return true;
-
   return false;
 };
 
