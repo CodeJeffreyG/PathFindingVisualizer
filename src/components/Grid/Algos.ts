@@ -8,16 +8,17 @@ const Dfs = (grid: any, setGrid: any, startNode: any) => {
     if (currentNode.isFinish) return;
     currentNode.isVisited = true;
 
+   
     let tempGrid = [...grid];
     setGrid(tempGrid);
 
     for (let i = 0; i <= 1; i += 1)
       for (let j = 0; j <= 1; j += 1)
-        if (check(currentNode.row + i, currentNode.col + j, grid) || grid[currentNode.row + i][currentNode.col + j].isFinish) {
+        if (check(currentNode.row + i, currentNode.col + j, grid)) {
           //   console.log(grid[currentNode.row + i][currentNode.col + j]);
           stack.push(grid[currentNode.row + i][currentNode.col + j]);
         }
-    console.log(currentNode);
+        console.log(currentNode);
   }
 };
 
