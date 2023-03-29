@@ -6,8 +6,10 @@ interface Node {
   isWall: boolean;
   isStart: boolean;
   isFinish: boolean;
+  isVisited: boolean;
   row: number | null;
   col: number | null;
+
 }
 
 const Algos: React.FC = () => {
@@ -17,6 +19,7 @@ const Algos: React.FC = () => {
     isWall: false,
     isStart: false,
     isFinish: false,
+    isVisited: false,
     row: null,
     col: null,
   };

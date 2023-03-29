@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import Dfs from "./Algos";
 import "./grid.css";
+import Algos from "./Grid";
 
 interface Node {
   isWall: boolean;
   isStart: boolean;
   isFinish: boolean;
+  isVisited: boolean;
   row: number | null;
   col: number | null;
 }
@@ -30,53 +32,58 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
     const currentId = e.currentTarget.id;
     let parsedId = currentId.split(",").map((x) => Number(x));
     let tempGrid = [...viewGrid];
-    console.log(currentId);
-    tempGrid[parsedId[0]][parsedId[1]].isWall = true;
+    let node = tempGrid[parsedId[0]][parsedId[1]];
+    if (node.isStart || node.isFinish) return;
+
+    node.isWall = !node.isWall;
     setViewGrid(tempGrid);
   };
 
   const mouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
     const currentId = e.currentTarget.id;
     let parsedId = currentId.split(",").map((x) => Number(x));
     let node = viewGrid[parsedId[0]][parsedId[1]];
 
-    if ((node.isStart || node.isFinish) && !node.isWall) {
+    if (node.isStart || node.isFinish) {
       setCurrentNode(node);
-      setMouseClick((prevMouseClick) => (prevMouseClick = true));
+      setMouseClick(true);
     }
   };
 
   const mouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const currentId = e.currentTarget.id;
-    let parsedId = currentId.split(",").map((x) => Number(x));
-    let node = viewGrid[parsedId[0]][parsedId[1]];
-
-    if ((node.isStart || node.isFinish) && !node.isWall) {
-      setMouseClick((prevMouseClick) => (prevMouseClick = false));
-    }
+    e.preventDefault();
+    setMouseClick(false);
   };
 
   const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (mouseClick) {
       const currentId = e.currentTarget.id;
       let parsedId = currentId.split(",").map((x) => Number(x));
-      let node = viewGrid[parsedId[0]][parsedId[1]];
 
       let tempGrid = [...viewGrid];
-      tempGrid[currentNode.row][currentNode.col] = { ...node };
-      tempGrid[parsedId[0]][parsedId[1]] = { ...currentNode };
 
-      setViewGrid(tempGrid);
-    }
-  };
+      let node = viewGrid[parsedId[0]][parsedId[1]]; //Node to switch
+      let startNode = tempGrid[currentNode.row][currentNode.col]; //node with start
 
-  const onMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (mouseClick) {
-      const currentId = e.currentTarget.id;
-      let parsedId = currentId.split(",").map((x) => Number(x));
-      let node = viewGrid[parsedId[0]][parsedId[1]];
-      setCurrentNode({ ...node, isStart: true });
+      tempGrid[currentNode.row][currentNode.col] = {
+        ...startNode,
+        isWall: node.isWall,
+        isStart: node.isStart,
+        isFinish: node.isFinish,
+      };
+      tempGrid[parsedId[0]][parsedId[1]] = {
+        ...node,
+        isWall: startNode.isWall,
+        isStart: startNode.isStart,
+        isFinish: startNode.isFinish,
+      };
+
+      setViewGrid(() => tempGrid);
+      setCurrentNode(() => node);
     }
+
+    // Dfs(grid, viewGrid, currentNode);
   };
 
   return (
@@ -89,15 +96,16 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
               key={colIndex}
               onMouseDown={mouseDown}
               onMouseUp={mouseUp}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
+              onMouseEnter={(e) => onMouseEnter(e)}
               style={
-                col.isStart === true
+                col.isStart
                   ? { backgroundColor: "green" }
-                  : col.isFinish === true
+                  : col.isFinish
                   ? { backgroundColor: "red" }
-                  : col.isWall === true
+                  : col.isWall
                   ? { backgroundColor: "black" }
+                  : col.isVisited
+                  ? { backgroundColor: "blue" }
                   : { backgroundColor: "rgb(71 85 105)" }
               }
               className="node"
@@ -106,6 +114,9 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
           ))}
         </div>
       ))}
+      <button onClick={() => Dfs(viewGrid, setViewGrid, currentNode)}>
+        start
+      </button>
     </>
   );
 };

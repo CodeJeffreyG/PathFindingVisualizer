@@ -13,7 +13,9 @@ const NavBar: React.FC = () => {
         <li>
           <Speed />
         </li>
-        <li>placeholder</li>
+        <li>
+          <button>PlaceHolder</button>
+        </li>
         <li>placeholder</li>
       </ul>
     </nav>
