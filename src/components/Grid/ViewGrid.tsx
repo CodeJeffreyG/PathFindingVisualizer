@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Dfs from "./Algos";
 import "./grid.css";
-import Algos from "./Grid";
 
 interface Node {
   isWall: boolean;
   isStart: boolean;
   isFinish: boolean;
   isVisited: boolean;
-  row: number | null;
-  col: number | null;
+  row: number;
+  col: number;
 }
 
 interface Props {
@@ -17,11 +16,12 @@ interface Props {
 }
 
 const ViewGrid: React.FC<Props> = ({ grid }) => {
-  const [viewGrid, setViewGrid] = useState(grid);
-  const [currentNode, setCurrentNode] = useState<any>({
+  const [viewGrid, setViewGrid] = useState<Node[][]>(grid);
+  const [currentNode, setCurrentNode] = useState<Node>({
     isWall: false,
     isStart: true,
     isFinish: false,
+    isVisited: false,
     row: 4,
     col: 4,
   });
@@ -80,8 +80,8 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
         isFinish: startNode.isFinish,
       };
 
-      setViewGrid(() => tempGrid);
-      setCurrentNode(() => node);
+      setViewGrid(tempGrid);
+      setCurrentNode(node);
     }
 
     // Dfs(grid, viewGrid, currentNode);

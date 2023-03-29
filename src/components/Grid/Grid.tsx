@@ -7,12 +7,11 @@ interface Node {
   isStart: boolean;
   isFinish: boolean;
   isVisited: boolean;
-  row: number | null;
-  col: number | null;
-
+  row: number;
+  col: number;
 }
 
-const Algos: React.FC = () => {
+const Grid: React.FC = () => {
   let grid: Array<Array<Node>> = [];
 
   const node: Node = {
@@ -20,8 +19,8 @@ const Algos: React.FC = () => {
     isStart: false,
     isFinish: false,
     isVisited: false,
-    row: null,
-    col: null,
+    row: 0,
+    col: 0,
   };
 
   const createGrid = () => {
@@ -47,4 +46,4 @@ const Algos: React.FC = () => {
   return <div className="gridContainer">{displayGrid}</div>;
 };
 
-export default Algos;
+export default Grid;
