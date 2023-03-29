@@ -26,26 +26,6 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
     col: 4,
   });
 
-  const fixStartNode = () => {
-    let tempGrid = [...viewGrid];
-    let startNode = {
-      isWall: false,
-      isStart: true,
-      isFinish: false,
-      isVisited: false,
-      row: 4,
-      col: 4,
-    };
-
-    for (let row = 0; row < tempGrid.length; row += 1) {
-      for (let col = 0; col < tempGrid[0].length; col += 1) {
-        if (grid[row][col].isStart) startNode = grid[row][col];
-      }
-    }
-
-    setCurrentNode(startNode);
-  };
-
   const [mouseClick, setMouseClick] = useState<boolean>(false);
 
   const changeState = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -101,9 +81,8 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
       };
 
       setViewGrid(tempGrid);
-
+      console.log(currentNode, node);
       setCurrentNode(node);
-      if (node.isFinish) fixStartNode();
     }
   };
 

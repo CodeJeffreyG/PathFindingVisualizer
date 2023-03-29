@@ -23,8 +23,8 @@ const Dfs = (
     let tempGrid = [...grid];
     setGrid(tempGrid);
 
-    for (let i = 0; i < 2; i += 1) {
-      for (let j = 0; j < 2; j += 1) {
+    for (let i = -1; i < 2; i += 1) {
+      for (let j = -1; j < 2; j += 1) {
         if (check(currentNode.row + i, currentNode.col + j, grid)) {
           stack.push(grid[currentNode.row + i][currentNode.col + j]);
         }
@@ -40,15 +40,14 @@ const check = (
   col: number,
   grid: Array<Array<Node>>
 ): boolean | void => {
-  if (grid[row][col] === undefined) console.log("it fuckin broke", row, col);
-  const inbounds = row >= 0 && row < 8 && col >= 0 && col < 26;
-  const correctCriteria =
-    !grid[row][col].isWall &&
-    !grid[row][col].isStart &&
-    !grid[row][col].isVisited;
+  if (row < 0 || col < 0 || row >= grid.length || col >= grid[0].length)
+    return false;
 
-  if (inbounds && correctCriteria) return true;
-  return false;
+  const currentNode = grid[row][col];
+  const correctCriteria =
+    !currentNode.isWall && !currentNode.isStart && !currentNode.isVisited;
+
+  return correctCriteria;
 };
 
 export default Dfs;
