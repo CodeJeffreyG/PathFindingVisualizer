@@ -1,4 +1,4 @@
-Pathfinding Visualizer
+#Pathfinding Visualizer
 Pathfinding Visualizer is a web application that visualizes the process of finding the shortest path between a start node and an end node on a grid. The grid is made up of rows and columns, and each cell on the grid represents a node. Each node can be of different types, indicated by different colors on the UI. For example, isWall: true makes the node black.
 
 Currently, the only available algorithm for finding the shortest path is Depth-First Search (DFS). Other algorithms, such as Breadth-First Search (BFS), will be added soon.
