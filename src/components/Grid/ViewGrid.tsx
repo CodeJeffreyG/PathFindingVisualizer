@@ -17,16 +17,20 @@ interface Props {
 
 const ViewGrid: React.FC<Props> = ({ grid }) => {
   const [viewGrid, setViewGrid] = useState<Node[][]>(grid);
-  const [currentNode, setCurrentNode] = useState<Node>({
-    isWall: false,
-    isStart: true,
-    isFinish: false,
-    isVisited: false,
-    row: 4,
-    col: 4,
-  });
 
   const [mouseClick, setMouseClick] = useState<boolean>(false);
+
+  const getStartNode = (): Node | undefined => {
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[0].length; col++) {
+        if (grid[row][col].isStart) {
+          return grid[row][col];
+        }
+      }
+    }
+  };
+
+  const [currentNode, setCurrentNode] = useState<Node>(getStartNode() as Node);
 
   const changeState = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const currentId = e.currentTarget.id;
@@ -114,7 +118,9 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
           ))}
         </div>
       ))}
-      <button onClick={() => Dfs(viewGrid, setViewGrid, currentNode)}>
+      <button
+        onClick={() => Dfs(viewGrid, setViewGrid, getStartNode() as Node)}
+      >
         start
       </button>
     </>
