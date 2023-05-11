@@ -6,7 +6,10 @@ interface Node {
   row: number;
   col: number;
   count: number;
+  backTracked: boolean;
 }
+
+let dfsRunning = false;
 
 const dfsTraverseBackToStart = async (
   grid: Array<Array<Node>>,
@@ -36,6 +39,12 @@ const Dfs = (
   grid: Array<Array<Node>>,
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>
 ) => {
+  // Check if DFS is already running
+  if (dfsRunning) {
+    console.log("DFS is already running!");
+    return;
+  }
+
   // Find the starting node
   const startNode = grid
     .map((row) => row.find((col) => col.isStart))
@@ -62,7 +71,10 @@ const Dfs = (
     if (!currentNode) return;
 
     // If the node is the finish node, return
-    if (currentNode.isFinish) return;
+    if (currentNode.isFinish) {
+      dfsRunning = false;
+      return;
+    }
 
     // Mark the node as visited and set its count property
     currentNode.isVisited = true;
@@ -87,9 +99,12 @@ const Dfs = (
       }
     }
 
-    // Call dfsTimeout again after 1 second to continue the DFS algorithm
-    setTimeout(dfsTimeout, 1000);
+    // Call dfsTimeout again after 10ms to continue the DFS algorithm
+    setTimeout(dfsTimeout, 10);
   };
+
+  // Set the dfsRunning flag to true before starting the DFS algorithm
+  dfsRunning = true;
 
   // Call dfsTimeout to start the DFS algorithm
   dfsTimeout();
@@ -101,13 +116,16 @@ const check = (
   col: number,
   grid: Array<Array<Node>>
 ): boolean | void => {
+  // Check if the row and column are within the grid bounds
   if (row < 0 || col < 0 || row >= grid.length || col >= grid[0].length)
     return false;
 
+  // Get the current node and check if it meets the criteria to be included in the DFS algorithm
   const currentNode = grid[row][col];
   const correctCriteria =
     !currentNode.isWall && !currentNode.isStart && !currentNode.isVisited;
 
+  // Return true if the current node meets the criteria, false otherwise
   return correctCriteria;
 };
 

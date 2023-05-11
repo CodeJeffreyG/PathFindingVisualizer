@@ -10,6 +10,7 @@ interface Node {
   row: number;
   col: number;
   count: number;
+  backTracked: boolean;
 }
 
 interface Props {
@@ -29,6 +30,7 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
     row: 4,
     col: 4,
     count: 0,
+    backTracked: false,
   });
 
   //changes normal node to wall node

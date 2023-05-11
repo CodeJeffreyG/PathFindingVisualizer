@@ -12,6 +12,7 @@ interface Node {
   row: number;
   col: number;
   count: number;
+  backTracked: boolean;
 }
 
 const Grid: React.FC = () => {
@@ -25,6 +26,7 @@ const Grid: React.FC = () => {
     row: 0,
     col: 0,
     count: 0,
+    backTracked: false,
   };
 
   const createGrid = () => {
