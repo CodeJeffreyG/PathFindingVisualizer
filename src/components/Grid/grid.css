@@ -16,6 +16,9 @@
 }
 
 .node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 5%;
   max-width: 5rem;
   height: 5rem;

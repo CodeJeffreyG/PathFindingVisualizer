@@ -9,6 +9,7 @@ interface Node {
   isVisited: boolean;
   row: number;
   col: number;
+  count: number;
 }
 
 interface Props {
@@ -20,18 +21,17 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
 
   const [mouseClick, setMouseClick] = useState<boolean>(false);
 
-  const getStartNode = (): Node | undefined => {
-    for (let row = 0; row < grid.length; row++) {
-      for (let col = 0; col < grid[0].length; col++) {
-        if (grid[row][col].isStart) {
-          return grid[row][col];
-        }
-      }
-    }
-  };
+  const [currentNode, setCurrentNode] = useState<Node>({
+    isWall: false,
+    isStart: false,
+    isFinish: false,
+    isVisited: false,
+    row: 4,
+    col: 4,
+    count: 0,
+  });
 
-  const [currentNode, setCurrentNode] = useState<Node>(getStartNode() as Node);
-
+  //changes normal node to wall node
   const changeState = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const currentId = e.currentTarget.id;
     let parsedId = currentId.split(",").map((x) => Number(x));
@@ -43,6 +43,7 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
     setViewGrid(tempGrid);
   };
 
+  //checks if its startNode or finishNode if it is able to drag node
   const mouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     const currentId = e.currentTarget.id;
@@ -53,14 +54,16 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
       setCurrentNode(node);
       setMouseClick(true);
     }
-    // console.log(node);
   };
 
+  //turns start/finish node draggable off
   const mouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     setMouseClick(false);
   };
 
+  //if mouseClick State is set to true... then swap the currentNode with the node the mouse just entered.
+  //keeps swapping until mouseClick is set to false.
   const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (mouseClick) {
       const currentId = e.currentTarget.id;
@@ -85,7 +88,6 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
       };
 
       setViewGrid(tempGrid);
-      console.log(currentNode, node);
       setCurrentNode(node);
     }
   };
@@ -114,15 +116,13 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
               }
               className="node"
               id={`${col.row},${col.col}`}
-            ></div>
+            >
+              {grid[rowIndex][colIndex].count}
+            </div>
           ))}
         </div>
       ))}
-      <button
-        onClick={() => Dfs(viewGrid, setViewGrid, getStartNode() as Node)}
-      >
-        start
-      </button>
+      <button onClick={() => Dfs(viewGrid, setViewGrid)}>start</button>
     </>
   );
 };

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ViewGrid from "./ViewGrid";
 import "./grid.css";
 
+//file simply meant to initalize grid and export it.
+
 interface Node {
   isWall: boolean;
   isStart: boolean;
@@ -9,6 +11,7 @@ interface Node {
   isVisited: boolean;
   row: number;
   col: number;
+  count: number;
 }
 
 const Grid: React.FC = () => {
@@ -21,6 +24,7 @@ const Grid: React.FC = () => {
     isVisited: false,
     row: 0,
     col: 0,
+    count: 0,
   };
 
   const createGrid = () => {
