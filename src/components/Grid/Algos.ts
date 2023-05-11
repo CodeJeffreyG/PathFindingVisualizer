@@ -36,12 +36,13 @@ const Dfs = (
   grid: Array<Array<Node>>,
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>
 ) => {
+  // Find the starting node
   const startNode = grid
     .map((row) => row.find((col) => col.isStart))
     .filter((x) => x)[0];
-  let count = 0;
 
-  //updown left and right all the correct indexes.
+  // Initialize the count variable and the upDownLeftRight array
+  let count = 0;
   const upDownLeftRight: any = [
     [1, 0],
     [0, 1],
@@ -49,24 +50,35 @@ const Dfs = (
     [0, -1],
   ];
 
+  // Initialize the stack with the starting node and count
   const stack = [[startNode, count]];
 
+  // Define the recursive dfsTimeout function
   const dfsTimeout = () => {
+    // Pop the next node and count off the stack
     let [currentNode, walkedSteps]: any = stack.pop();
+
+    // If the node is undefined, return
     if (!currentNode) return;
+
+    // If the node is the finish node, return
     if (currentNode.isFinish) return;
 
+    // Mark the node as visited and set its count property
     currentNode.isVisited = true;
-
     currentNode.count = walkedSteps;
 
+    // Update the grid state to reflect the changes to the node
     let tempGrid = [...grid];
     tempGrid[currentNode.row][currentNode.col] = currentNode;
     setGrid(tempGrid);
 
+    // Check each neighbor of the current node
     for (let arr of upDownLeftRight) {
-      //deconstructing the indexes
+      // Deconstruct the indexes of the neighbor
       const [i, j] = arr;
+
+      // If the neighbor is a valid node, add it to the stack with an increased count
       if (check(currentNode.row + i, currentNode.col + j, grid)) {
         stack.push([
           grid[currentNode.row + i][currentNode.col + j],
@@ -75,11 +87,11 @@ const Dfs = (
       }
     }
 
-    // Call dfsTimeout after 1 second
-    setTimeout(dfsTimeout, 10);
+    // Call dfsTimeout again after 1 second to continue the DFS algorithm
+    setTimeout(dfsTimeout, 1000);
   };
 
-  // Start the DFS loop
+  // Call dfsTimeout to start the DFS algorithm
   dfsTimeout();
 };
 
