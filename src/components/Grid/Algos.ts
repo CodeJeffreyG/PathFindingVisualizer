@@ -14,76 +14,69 @@ const dfsFastestPathBack = (
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>,
   upDownLeftRight: Array<[number, number]>
 ) => {
+  // Find the start and finish nodes
   const startNode = grid
-    .map((row) => row.find((col) => col.isStart))
-    .filter((x) => x)[0];
-
+    .find((row) => row.find((node) => node.isStart))!
+    .find((node) => node.isStart)!;
   const finishNode = grid
-    .map((row) => row.find((col) => col.isFinish))
-    .filter((x) => x)[0];
+    .find((row) => row.find((node) => node.isFinish))!
+    .find((node) => node.isFinish)!;
 
-  // Initialize the stack with the finish node and count
-  const stack = [[finishNode, 0]];
+  // Keep track of the fastest path back to the start node
+  const fastestPathBack: Array<Node> = [];
 
-  // Define the dfs function that will be called with setTimeout
-  const dfs = () => {
-    // If the stack is empty, return
-    if (stack.length === 0) return;
-
-    // Pop the next node and count off the stack
-    let [currentNode, walkedSteps]: any = stack.pop();
-
-    // If the node is undefined, call dfs again with setTimeout
-    if (!currentNode) {
-      setTimeout(dfs, 10);
-      return;
-    }
-
-    // If the node is the start node, color the fastest path back and return
+  // Define the DFS algorithm to traverse the graph from the finish node back to the start node
+  const dfs = (currentNode: Node) => {
+    // If we have reached the start node, add it to the fastest path back and return
     if (currentNode.isStart) {
-      let tempGrid = [...grid];
-      let currentNode = startNode;
-      while (currentNode && !currentNode.isFinish) {
-        currentNode.backTracked = true;
-        let row = currentNode.row;
-        let col = currentNode.col;
-        currentNode = grid[row][col].count
-          .map((n) => upDownLeftRight[n])
-          .map(([i, j]) => grid[row + i][col + j])
-          .find((n) => n.count.includes(n.count.indexOf(walkedSteps) - 1));
-      }
-      setGrid(tempGrid);
+      fastestPathBack.push(currentNode);
       return;
     }
 
-    // Mark the node as visited
-    currentNode.isVisited = true;
+    // Mark the current node as part of the fastest path back
+    fastestPathBack.push(currentNode);
 
-    // Update the grid state to reflect the changes to the node
+    // Mark the node as visited and update the grid state
+    currentNode.isVisited = false;
+    currentNode.backTracked = true;
     let tempGrid = [...grid];
     tempGrid[currentNode.row][currentNode.col] = currentNode;
     setGrid(tempGrid);
 
     // Check each neighbor of the current node
-    for (let arr of upDownLeftRight) {
-      // Deconstruct the indexes of the neighbor
-      const [i, j] = arr;
+    for (const [i, j] of upDownLeftRight) {
+      // Get the neighbor node
+      const neighborRow = currentNode.row + i;
+      const neighborCol = currentNode.col + j;
+      const neighborNode = grid[neighborRow]?.[neighborCol];
 
-      // If the neighbor is a valid node, add it to the stack with an increased count
-      if (checkBackTrack(currentNode.row + i, currentNode.col + j, grid)) {
-        stack.push([
-          grid[currentNode.row + i][currentNode.col + j],
-          walkedSteps + 1,
-        ]);
+      // If the neighbor node is valid and has a lower count, call DFS on it
+      if (
+        neighborNode &&
+        neighborNode.count < currentNode.count &&
+        !neighborNode.isWall
+      ) {
+        dfs(neighborNode);
+        return;
       }
     }
 
-    // Call dfs again with setTimeout after 1000ms to continue the DFS algorithm
-    setTimeout(dfs, 10);
+    // If we have not returned yet, we have no valid neighbor to go to
+    // Remove the current node from the fastest path back and backtrack
+    fastestPathBack.pop();
+    dfs(fastestPathBack[fastestPathBack.length - 1]);
   };
 
-  // Call dfs to start the DFS algorithm
-  dfs();
+  // Call the DFS algorithm with the finish node
+  dfs(finishNode);
+
+  // Mark the nodes in the fastest path back as part of the path
+  for (const node of fastestPathBack) {
+    node.backTracked = true;
+    let tempGrid = [...grid];
+    tempGrid[node.row][node.col] = node;
+    setGrid(tempGrid);
+  }
 };
 
 const Dfs = (
