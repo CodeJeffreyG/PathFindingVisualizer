@@ -97,7 +97,7 @@ const Dfs = (
 
   // Initialize the count variable and the upDownLeftRight array
   let count = 0;
-  const upDownLeftRight: any = [
+  const upDownLeftRight: Array<[number, number]> = [
     [1, 0],
     [0, 1],
     [-1, 0],
@@ -117,12 +117,15 @@ const Dfs = (
 
     // If the node is undefined, call dfs again with setTimeout
     if (!currentNode) {
-      setTimeout(dfs, 1000);
+      setTimeout(dfs, 10);
       return;
     }
 
     // If the node is the finish node, return
-    if (currentNode.isFinish) return;
+    if (currentNode.isFinish) {
+      dfsFastestPathBack(grid, setGrid, upDownLeftRight);
+      return;
+    }
 
     // Mark the node as visited and set its count property
     currentNode.isVisited = true;
