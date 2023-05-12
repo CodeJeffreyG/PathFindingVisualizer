@@ -9,10 +9,10 @@ interface Node {
   backTracked: boolean;
 }
 
-const dfsTraverseBackToStart = async (
+const dfsFastestPathBack = (
   grid: Array<Array<Node>>,
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>,
-  upDownLeftRight: Array<number>
+  upDownLeftRight: Array<[number, number]>
 ) => {
   const startNode = grid
     .map((row) => row.find((col) => col.isStart))
@@ -22,15 +22,68 @@ const dfsTraverseBackToStart = async (
     .map((row) => row.find((col) => col.isFinish))
     .filter((x) => x)[0];
 
-  const stack = [finishNode];
+  // Initialize the stack with the finish node and count
+  const stack = [[finishNode, 0]];
 
-  while (stack.length !== 0) {
-    let currentNode: any = stack.pop();
-    if (!currentNode.row) return;
-    return;
-  }
+  // Define the dfs function that will be called with setTimeout
+  const dfs = () => {
+    // If the stack is empty, return
+    if (stack.length === 0) return;
 
-  console.log(startNode, finishNode);
+    // Pop the next node and count off the stack
+    let [currentNode, walkedSteps]: any = stack.pop();
+
+    // If the node is undefined, call dfs again with setTimeout
+    if (!currentNode) {
+      setTimeout(dfs, 10);
+      return;
+    }
+
+    // If the node is the start node, color the fastest path back and return
+    if (currentNode.isStart) {
+      let tempGrid = [...grid];
+      let currentNode = startNode;
+      while (currentNode && !currentNode.isFinish) {
+        currentNode.backTracked = true;
+        let row = currentNode.row;
+        let col = currentNode.col;
+        currentNode = grid[row][col].count
+          .map((n) => upDownLeftRight[n])
+          .map(([i, j]) => grid[row + i][col + j])
+          .find((n) => n.count.includes(n.count.indexOf(walkedSteps) - 1));
+      }
+      setGrid(tempGrid);
+      return;
+    }
+
+    // Mark the node as visited
+    currentNode.isVisited = true;
+
+    // Update the grid state to reflect the changes to the node
+    let tempGrid = [...grid];
+    tempGrid[currentNode.row][currentNode.col] = currentNode;
+    setGrid(tempGrid);
+
+    // Check each neighbor of the current node
+    for (let arr of upDownLeftRight) {
+      // Deconstruct the indexes of the neighbor
+      const [i, j] = arr;
+
+      // If the neighbor is a valid node, add it to the stack with an increased count
+      if (checkBackTrack(currentNode.row + i, currentNode.col + j, grid)) {
+        stack.push([
+          grid[currentNode.row + i][currentNode.col + j],
+          walkedSteps + 1,
+        ]);
+      }
+    }
+
+    // Call dfs again with setTimeout after 1000ms to continue the DFS algorithm
+    setTimeout(dfs, 10);
+  };
+
+  // Call dfs to start the DFS algorithm
+  dfs();
 };
 
 const Dfs = (
