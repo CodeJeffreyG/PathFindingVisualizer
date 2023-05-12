@@ -9,8 +9,6 @@ interface Node {
   backTracked: boolean;
 }
 
-let dfsRunning = false;
-
 const dfsTraverseBackToStart = async (
   grid: Array<Array<Node>>,
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>,
@@ -39,12 +37,6 @@ const Dfs = (
   grid: Array<Array<Node>>,
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>
 ) => {
-  // Check if DFS is already running
-  if (dfsRunning) {
-    console.log("DFS is already running!");
-    return;
-  }
-
   // Find the starting node
   const startNode = grid
     .map((row) => row.find((col) => col.isStart))
@@ -62,19 +54,22 @@ const Dfs = (
   // Initialize the stack with the starting node and count
   const stack = [[startNode, count]];
 
-  // Define the recursive dfsTimeout function
-  const dfsTimeout = () => {
+  // Define the dfs function that will be called with setTimeout
+  const dfs = () => {
+    // If the stack is empty, return
+    if (stack.length === 0) return;
+
     // Pop the next node and count off the stack
     let [currentNode, walkedSteps]: any = stack.pop();
 
-    // If the node is undefined, return
-    if (!currentNode) return;
-
-    // If the node is the finish node, return
-    if (currentNode.isFinish) {
-      dfsRunning = false;
+    // If the node is undefined, call dfs again with setTimeout
+    if (!currentNode) {
+      setTimeout(dfs, 1000);
       return;
     }
+
+    // If the node is the finish node, return
+    if (currentNode.isFinish) return;
 
     // Mark the node as visited and set its count property
     currentNode.isVisited = true;
@@ -99,15 +94,12 @@ const Dfs = (
       }
     }
 
-    // Call dfsTimeout again after 10ms to continue the DFS algorithm
-    setTimeout(dfsTimeout, 10);
+    // Call dfs again with setTimeout after 1000ms to continue the DFS algorithm
+    setTimeout(dfs, 10);
   };
 
-  // Set the dfsRunning flag to true before starting the DFS algorithm
-  dfsRunning = true;
-
-  // Call dfsTimeout to start the DFS algorithm
-  dfsTimeout();
+  // Call dfs to start the DFS algorithm
+  dfs();
 };
 
 //checks if each node is a valid index in the graph, also checks if node is a valid type of node
