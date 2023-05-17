@@ -7,6 +7,7 @@ interface Node {
   isStart: boolean;
   isFinish: boolean;
   isVisited: boolean;
+  previousNode: Node | null;
   row: number;
   col: number;
   count: number;
@@ -27,6 +28,7 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
     isStart: false,
     isFinish: false,
     isVisited: false,
+    previousNode: null,
     row: 4,
     col: 4,
     count: 0,
@@ -121,7 +123,7 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
               className="node"
               id={`${col.row},${col.col}`}
             >
-              {grid[rowIndex][colIndex].count}
+              {/* {grid[rowIndex][colIndex].count} */}
             </div>
           ))}
         </div>

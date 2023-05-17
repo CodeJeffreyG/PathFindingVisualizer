@@ -9,12 +9,12 @@ interface Node {
   isStart: boolean;
   isFinish: boolean;
   isVisited: boolean;
+  previousNode: Node | null;
   row: number;
   col: number;
   count: number;
   backTracked: boolean;
 }
-
 const Grid: React.FC = () => {
   let grid: Array<Array<Node>> = [];
 
@@ -23,6 +23,7 @@ const Grid: React.FC = () => {
     isStart: false,
     isFinish: false,
     isVisited: false,
+    previousNode: null,
     row: 0,
     col: 0,
     count: 0,

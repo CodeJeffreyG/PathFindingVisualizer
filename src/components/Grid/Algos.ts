@@ -3,6 +3,7 @@ interface Node {
   isStart: boolean;
   isFinish: boolean;
   isVisited: boolean;
+  previousNode: Node | null;
   row: number;
   col: number;
   count: number;
@@ -11,13 +12,11 @@ interface Node {
 //will be used to find the shortest path
 
 //write an algorithim that finds the shortest path back from the finishNode to the startNode
-const bfsTraverseBack = (
+const bfsTraverseBack = async (
   grid: Array<Array<Node>>,
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>,
   finishNode: Node
 ) => {
-  const tempGrid = [...grid];
-
   const upDownLeftRight: any = [
     [1, 0],
     [0, 1],
@@ -25,61 +24,43 @@ const bfsTraverseBack = (
     [0, -1],
   ];
 
-  const queue = [finishNode];
-  const visited: Set<Node> = new Set();
-  const previous: Map<Node, Node | null> = new Map();
+  const traverse = async (queue: Node[]) => {
+    if (queue.length === 0) return;
 
-  while (queue.length > 0) {
     const currentNode = queue.shift();
     if (!currentNode) return;
-    if (currentNode.isStart) break;
 
-    visited.add(currentNode);
+    if (currentNode.isStart) {
+      console.log("start node found!");
+      setGrid([...grid]); // Update the grid
+      return;
+    }
+
+    let checkWeights: any = [];
 
     for (let arr of upDownLeftRight) {
       const [i, j] = arr;
-      const newRow = currentNode.row + i;
-      const newCol = currentNode.col + j;
-
-      if (
-        newRow >= 0 &&
-        newRow < grid.length &&
-        newCol >= 0 &&
-        newCol < grid[0].length
-      ) {
-        const neighborNode = grid[newRow][newCol];
-        if (
-          !visited.has(neighborNode) &&
-          !neighborNode.isWall &&
-          !neighborNode.isStart
-        ) {
-          queue.push(neighborNode);
-          visited.add(neighborNode);
-          previous.set(neighborNode, currentNode);
-        }
-      }
+      if (checkBackTrack(currentNode.row + i, currentNode.col + j, grid))
+        checkWeights.push(grid[currentNode.row + i][currentNode.col + j]);
     }
-  }
 
-  // Reconstruct the shortest path
-  let currentNode: any = grid[finishNode.row][finishNode.col];
-  const shortestPath: Node[] = [];
+    const smallestWeight: Node | null = checkSmallestWeight(checkWeights);
 
-  while (currentNode) {
-    shortestPath.unshift(currentNode);
-    currentNode = previous.get(currentNode) || null;
-  }
+    if (smallestWeight) {
+      queue.push(smallestWeight);
+      grid[smallestWeight.row][smallestWeight.col].isVisited = false;
+      grid[smallestWeight.row][smallestWeight.col].backTracked = true;
+    }
 
-  // Mark the shortest path nodes as backtracked and not visited
-  for (let node of shortestPath) {
-    tempGrid[node.row][node.col].backTracked = true;
-    tempGrid[node.row][node.col].isVisited = false;
-  }
+    setGrid([...grid]); // Update the grid
+    await new Promise((resolve) => setTimeout(resolve, 100)); // Delay between iterations
 
-  setGrid([...tempGrid]); // Update the grid state
+    await traverse(queue); // Recursive call for the next iteration
+  };
+
+  const queue = [finishNode];
+  await traverse(queue);
 };
-
-
 
 const Dfs = (
   grid: Array<Array<Node>>,
@@ -112,6 +93,7 @@ const Dfs = (
 
     // If the node is the finish node, return
     if (currentNode.isFinish) {
+      console.log("finish Node found!");
       bfsTraverseBack(grid, setGrid, currentNode);
       return;
     }
@@ -180,6 +162,7 @@ const Bfs = (
 
     // If the node is the finish node, return
     if (currentNode.isFinish) {
+      console.log("finish Node found!");
       bfsTraverseBack(grid, setGrid, currentNode);
       return;
     }
@@ -255,21 +238,19 @@ const checkBackTrack = (
     return false;
 
   const currentNode = grid[row][col];
-  const correctCriteria =
-    !currentNode.isWall && !currentNode.isStart && currentNode.isVisited;
+  const correctCriteria = !currentNode.isWall && currentNode.isVisited;
 
   return correctCriteria;
 };
 
-const checkSmallestWeight = (checkWeights: Array<Node>) => {
+const checkSmallestWeight = (checkWeights: Node[]): Node | null => {
   if (checkWeights.length === 0) {
-    // Handle the case when the array is empty
-    return null; // Or return an appropriate default value
+    return null;
   }
 
   return checkWeights.reduce((prev, curr) =>
     prev.count < curr.count ? prev : curr
-  );
+  )!;
 };
 
 export { Dfs, Bfs };
