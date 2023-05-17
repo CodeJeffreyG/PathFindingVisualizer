@@ -8,12 +8,78 @@ interface Node {
   count: number;
   backTracked: boolean;
 }
+//will be used to find the shortest path
 
-const dfsTraverseBackToStart = async (
+//write an algorithim that finds the shortest path back from the finishNode to the startNode
+const bfsTraverseBack = (
   grid: Array<Array<Node>>,
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>,
-  upDownLeftRight: Array<number>
-) => {};
+  finishNode: Node
+) => {
+  const tempGrid = [...grid];
+
+  const upDownLeftRight: any = [
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+    [0, -1],
+  ];
+
+  const queue = [finishNode];
+  const visited: Set<Node> = new Set();
+  const previous: Map<Node, Node | null> = new Map();
+
+  while (queue.length > 0) {
+    const currentNode = queue.shift();
+    if (!currentNode) return;
+    if (currentNode.isStart) break;
+
+    visited.add(currentNode);
+
+    for (let arr of upDownLeftRight) {
+      const [i, j] = arr;
+      const newRow = currentNode.row + i;
+      const newCol = currentNode.col + j;
+
+      if (
+        newRow >= 0 &&
+        newRow < grid.length &&
+        newCol >= 0 &&
+        newCol < grid[0].length
+      ) {
+        const neighborNode = grid[newRow][newCol];
+        if (
+          !visited.has(neighborNode) &&
+          !neighborNode.isWall &&
+          !neighborNode.isStart
+        ) {
+          queue.push(neighborNode);
+          visited.add(neighborNode);
+          previous.set(neighborNode, currentNode);
+        }
+      }
+    }
+  }
+
+  // Reconstruct the shortest path
+  let currentNode: any = grid[finishNode.row][finishNode.col];
+  const shortestPath: Node[] = [];
+
+  while (currentNode) {
+    shortestPath.unshift(currentNode);
+    currentNode = previous.get(currentNode) || null;
+  }
+
+  // Mark the shortest path nodes as backtracked and not visited
+  for (let node of shortestPath) {
+    tempGrid[node.row][node.col].backTracked = true;
+    tempGrid[node.row][node.col].isVisited = false;
+  }
+
+  setGrid([...tempGrid]); // Update the grid state
+};
+
+
 
 const Dfs = (
   grid: Array<Array<Node>>,
@@ -45,7 +111,10 @@ const Dfs = (
     if (!currentNode) return;
 
     // If the node is the finish node, return
-    if (currentNode.isFinish) return;
+    if (currentNode.isFinish) {
+      bfsTraverseBack(grid, setGrid, currentNode);
+      return;
+    }
 
     // Mark the node as visited and set its count property
     currentNode.isVisited = true;
@@ -110,7 +179,10 @@ const Bfs = (
     if (!currentNode) return;
 
     // If the node is the finish node, return
-    if (currentNode.isFinish) return;
+    if (currentNode.isFinish) {
+      bfsTraverseBack(grid, setGrid, currentNode);
+      return;
+    }
 
     // Mark the node as visited
     currentNode.isVisited = true;
@@ -187,6 +259,17 @@ const checkBackTrack = (
     !currentNode.isWall && !currentNode.isStart && currentNode.isVisited;
 
   return correctCriteria;
+};
+
+const checkSmallestWeight = (checkWeights: Array<Node>) => {
+  if (checkWeights.length === 0) {
+    // Handle the case when the array is empty
+    return null; // Or return an appropriate default value
+  }
+
+  return checkWeights.reduce((prev, curr) =>
+    prev.count < curr.count ? prev : curr
+  );
 };
 
 export { Dfs, Bfs };
