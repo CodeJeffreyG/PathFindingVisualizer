@@ -1,18 +1,9 @@
-interface Node {
-  isWall: boolean;
-  isStart: boolean;
-  isFinish: boolean;
-  isVisited: boolean;
-  previousNode: Node | null;
-  row: number;
-  col: number;
-  count: number;
-  backTracked: boolean;
-}
+import { Node } from "../../Helpers/types/types";
+
 //will be used to find the shortest path
 
 //write an algorithim that finds the shortest path back from the finishNode to the startNode
-const bfsTraverseBack = async (
+const bfsTraverseBack = (
   grid: Array<Array<Node>>,
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>,
   finishNode: Node
@@ -24,7 +15,7 @@ const bfsTraverseBack = async (
     [0, -1],
   ];
 
-  const traverse = async (queue: Node[]) => {
+  const traverse = (queue: Node[]) => {
     if (queue.length === 0) return;
 
     const currentNode = queue.shift();
@@ -53,13 +44,14 @@ const bfsTraverseBack = async (
     }
 
     setGrid([...grid]); // Update the grid
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Delay between iterations
 
-    await traverse(queue); // Recursive call for the next iteration
+    setTimeout(() => {
+      traverse(queue); // Recursive call for the next iteration
+    }, 100);
   };
 
   const queue = [finishNode];
-  await traverse(queue);
+  traverse(queue);
 };
 
 const Dfs = (

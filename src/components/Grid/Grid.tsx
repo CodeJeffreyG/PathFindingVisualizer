@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { Node } from "../../Helpers/types/types";
 import ViewGrid from "./ViewGrid";
 import "./grid.css";
 
 //file simply meant to initalize grid and export it.
 
-interface Node {
-  isWall: boolean;
-  isStart: boolean;
-  isFinish: boolean;
-  isVisited: boolean;
-  previousNode: Node | null;
-  row: number;
-  col: number;
-  count: number;
-  backTracked: boolean;
-}
 const Grid: React.FC = () => {
   let grid: Array<Array<Node>> = [];
 
