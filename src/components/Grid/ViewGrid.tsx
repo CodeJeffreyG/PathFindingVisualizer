@@ -114,6 +114,8 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
                   ? { backgroundColor: "black" }
                   : col.isVisited
                   ? { backgroundColor: "blue" }
+                  : col.backTracked
+                  ? { backgroundColor: "gold" }
                   : { backgroundColor: "rgb(71 85 105)" }
               }
               className="node"

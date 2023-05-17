@@ -83,14 +83,20 @@ const Dfs = (
   grid: Array<Array<Node>>,
   setGrid: React.Dispatch<React.SetStateAction<Array<Array<Node>>>>
 ) => {
-  // Find the starting node
-  const startNode = grid
-    .map((row) => row.find((col) => col.isStart))
-    .filter((x) => x)[0];
+  // Find the starting node with the 'isStart' property set to true
+  const startNode = grid.flatMap((row) =>
+    row.filter((node) => node.isStart)
+  )[0];
+
+  // If the starting node is not found, log an error message and return
+  if (!startNode) {
+    console.error("Starting node not found!");
+    return;
+  }
 
   // Initialize the count variable and the upDownLeftRight array
   let count = 0;
-  const upDownLeftRight: Array<[number, number]> = [
+  const upDownLeftRight: any = [
     [1, 0],
     [0, 1],
     [-1, 0],
@@ -100,55 +106,48 @@ const Dfs = (
   // Initialize the stack with the starting node and count
   const stack = [[startNode, count]];
 
-  // Define the dfs function that will be called with setTimeout
+  // Define the dfs function
   const dfs = () => {
-    // If the stack is empty, return
-    if (stack.length === 0) return;
+    while (stack.length !== 0) {
+      // Pop the next node and count off the stack
+      let [currentNode, walkedSteps]: any = stack.pop();
 
-    // Pop the next node and count off the stack
-    let [currentNode, walkedSteps]: any = stack.pop();
+      // If the node is undefined, return
+      if (!currentNode) return;
 
-    // If the node is undefined, call dfs again with setTimeout
-    if (!currentNode) {
-      setTimeout(dfs, 10);
-      return;
-    }
+      // If the node is the finish node, return
+      if (currentNode.isFinish) {
+        dfsFastestPathBack(grid, setGrid, upDownLeftRight)
+        return;
+      }
 
-    // If the node is the finish node, return
-    if (currentNode.isFinish) {
-      dfsFastestPathBack(grid, setGrid, upDownLeftRight);
-      return;
-    }
+      // Mark the node as visited and set its count property
+      currentNode.isVisited = true;
+      currentNode.count = walkedSteps;
 
-    // Mark the node as visited and set its count property
-    currentNode.isVisited = true;
-    currentNode.count = walkedSteps;
+      // Update the grid state to reflect the changes to the node
+      let tempGrid = [...grid];
+      tempGrid[currentNode.row][currentNode.col] = currentNode;
+      setGrid(tempGrid);
 
-    // Update the grid state to reflect the changes to the node
-    let tempGrid = [...grid];
-    tempGrid[currentNode.row][currentNode.col] = currentNode;
-    setGrid(tempGrid);
+      // Check each neighbor of the current node
+      for (let arr of upDownLeftRight) {
+        // Deconstruct the indexes of the neighbor
+        const [i, j] = arr;
 
-    // Check each neighbor of the current node
-    for (let arr of upDownLeftRight) {
-      // Deconstruct the indexes of the neighbor
-      const [i, j] = arr;
-
-      // If the neighbor is a valid node, add it to the stack with an increased count
-      if (check(currentNode.row + i, currentNode.col + j, grid)) {
-        stack.push([
-          grid[currentNode.row + i][currentNode.col + j],
-          walkedSteps + 1,
-        ]);
+        // If the neighbor is a valid node, add it to the stack with an increased count
+        if (check(currentNode.row + i, currentNode.col + j, grid)) {
+          stack.push([
+            grid[currentNode.row + i][currentNode.col + j],
+            walkedSteps + 1,
+          ]);
+        }
       }
     }
-
-    // Call dfs again with setTimeout after 1000ms to continue the DFS algorithm
-    setTimeout(dfs, 10);
   };
 
-  // Call dfs to start the DFS algorithm
-  dfs();
+  // Call dfs with setTimeout to continue the DFS algorithm every 10ms
+  setTimeout(dfs, 10);
 };
 
 //checks if each node is a valid index in the graph, also checks if node is a valid type of node
