@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Dfs from "./Algos";
+import { Dfs, Bfs } from "./Algos";
 import "./grid.css";
 
 interface Node {
@@ -126,7 +126,7 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
           ))}
         </div>
       ))}
-      <button onClick={() => Dfs(viewGrid, setViewGrid)}>start</button>
+      <button onClick={() => Bfs(viewGrid, setViewGrid)}>start</button>
     </>
   );
 };
