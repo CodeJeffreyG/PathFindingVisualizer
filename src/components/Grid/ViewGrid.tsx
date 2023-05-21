@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dfs, Bfs } from "./Algos";
+import { clearGrid } from "../../Helpers/clearGrid";
 import "./grid.css";
 
 interface Node {
@@ -107,19 +108,19 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
               onMouseDown={mouseDown}
               onMouseUp={mouseUp}
               onMouseEnter={(e) => onMouseEnter(e)}
-              style={
-                col.isStart
-                  ? { backgroundColor: "green" }
+              style={{
+                backgroundColor: col.isStart
+                  ? "green"
                   : col.isFinish
-                  ? { backgroundColor: "red" }
+                  ? "red"
                   : col.isWall
-                  ? { backgroundColor: "black" }
+                  ? "black"
                   : col.isVisited
-                  ? { backgroundColor: "blue" }
+                  ? "blue"
                   : col.backTracked
-                  ? { backgroundColor: "gold" }
-                  : { backgroundColor: "rgb(71 85 105)" }
-              }
+                  ? "gold"
+                  : "rgb(71 85 105)",
+              }}
               className="node"
               id={`${col.row},${col.col}`}
             >
@@ -128,7 +129,15 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
           ))}
         </div>
       ))}
-      <button onClick={() => Bfs(viewGrid, setViewGrid)}>start</button>
+      <button
+        onClick={() => {
+          const resetGrid = clearGrid();
+          setViewGrid(resetGrid);
+          Bfs(resetGrid, setViewGrid);
+        }}
+      >
+        start
+      </button>
     </>
   );
 };

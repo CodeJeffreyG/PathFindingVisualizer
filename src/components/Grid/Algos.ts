@@ -1,4 +1,5 @@
 import { Node } from "../../Helpers/types/types";
+import { clearGrid } from "../../Helpers/clearGrid";
 
 //will be used to find the shortest path
 
@@ -129,6 +130,14 @@ const Bfs = (
   const startNode = grid
     .map((row) => row.find((col) => col.isStart))
     .filter((x) => x)[0];
+
+  const finishNode = grid
+    .map((row) => row.find((col) => col.isFinish))
+    .filter((x) => x)[0];
+
+  const resetGrid = clearGrid(startNode, finishNode);
+
+  setGrid(resetGrid);
 
   // Initialize the upDownLeftRight array
   const upDownLeftRight: any = [
