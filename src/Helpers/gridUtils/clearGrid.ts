@@ -1,5 +1,5 @@
-import { Node } from "./types/types";
-import { createGrid } from "../components/Grid/Grid";
+import { Node } from "../types/types";
+import { createGrid } from "../../components/Grid/Grid";
 
 export const clearGrid = (
   startNode: Node = createGrid()[4][4],

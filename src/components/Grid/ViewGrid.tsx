@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Dfs, Bfs } from "./Algos";
-import { clearGrid } from "../../Helpers/clearGrid";
-import "./grid.css";
+import React, { useState } from "react";
+
+import { resetGridAndRunAlgorithm } from "../../Helpers/gridUtils/gridLogic";
 
 interface Node {
   isWall: boolean;
@@ -129,13 +128,7 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
           ))}
         </div>
       ))}
-      <button
-        onClick={() => {
-          const resetGrid = clearGrid();
-          setViewGrid(resetGrid);
-          Bfs(resetGrid, setViewGrid);
-        }}
-      >
+      <button onClick={() => resetGridAndRunAlgorithm(viewGrid, setViewGrid)}>
         start
       </button>
     </>

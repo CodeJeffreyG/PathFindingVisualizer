@@ -1,5 +1,5 @@
-import { Node } from "../../Helpers/types/types";
-import { clearGrid } from "../../Helpers/clearGrid";
+import { Node } from "../types/types";
+import { clearGrid } from "./clearGrid";
 
 //will be used to find the shortest path
 
@@ -255,26 +255,3 @@ const checkSmallestWeight = (checkWeights: Node[]): Node | null => {
 };
 
 export { Dfs, Bfs };
-
-// let arr = [9, 5, 9, 5, 1, 1, 1];
-
-// const fuckingGayFunction = (arr: any) => {
-//     let bigArray = [];
-//     let i = 0;
-
-//     while(i !== arr.length) {
-//         let subArray = [];
-
-//         for(let j = i; j < i + 3; j += 1) {
-//             if(arr[j] === undefined) break;
-//             subArray.push(arr[j]);
-//         }
-
-//         if(subArray.length === 3) bigArray.push(subArray)
-//         i += 1
-//     }
-
-//     return bigArray
-// }
-
-// console.log(fuckingGayFunction(arr));
