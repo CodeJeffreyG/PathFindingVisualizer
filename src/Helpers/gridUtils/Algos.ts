@@ -23,7 +23,6 @@ const bfsTraverseBack = (
     if (!currentNode) return;
 
     if (currentNode.isStart) {
-      console.log("start node found!");
       setGrid([...grid]); // Update the grid
       return;
     }

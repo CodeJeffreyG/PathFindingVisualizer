@@ -1,18 +1,6 @@
 import React, { useState } from "react";
-
-import { resetGridAndRunAlgorithm } from "../../Helpers/gridUtils/gridLogic";
-
-interface Node {
-  isWall: boolean;
-  isStart: boolean;
-  isFinish: boolean;
-  isVisited: boolean;
-  previousNode: Node | null;
-  row: number;
-  col: number;
-  count: number;
-  backTracked: boolean;
-}
+import { resetGridAndRunAlgorithm } from "../../Helpers/gridUtils/resetGridRunAlgo";
+import { Node } from "../../Helpers/types/types";
 
 interface Props {
   grid: Node[][];
@@ -128,7 +116,11 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
           ))}
         </div>
       ))}
-      <button onClick={() => resetGridAndRunAlgorithm(viewGrid, setViewGrid)}>
+      <button
+        onClick={() => {
+          resetGridAndRunAlgorithm(viewGrid, setViewGrid);
+        }}
+      >
         start
       </button>
     </>

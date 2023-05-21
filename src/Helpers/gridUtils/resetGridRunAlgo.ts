@@ -1,7 +1,8 @@
 import { Node } from "../types/types";
 import { clearGrid } from "./clearGrid";
 import { getStartAndFinishNodes } from "../nodeUtils/findStart&Finish";
-import { Bfs } from "../gridUtils/Algos";
+
+import { Bfs } from "./Algos";
 
 export const resetGridAndRunAlgorithm = (
   grid: Array<Array<Node>>,
@@ -11,6 +12,7 @@ export const resetGridAndRunAlgorithm = (
   if (startNode && finishNode) {
     const resetGrid = clearGrid(startNode, finishNode);
     setGrid(resetGrid);
+
     Bfs(resetGrid, setGrid);
   } else {
     console.log("Start or finish node not found.");
