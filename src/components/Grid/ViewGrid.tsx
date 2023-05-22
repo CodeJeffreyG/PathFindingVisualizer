@@ -118,7 +118,7 @@ const ViewGrid: React.FC<Props> = ({ grid }) => {
       ))}
       <button
         onClick={() => {
-          resetGridAndRunAlgorithm(viewGrid, setViewGrid);
+          resetGridAndRunAlgorithm(grid, setViewGrid);
         }}
       >
         start

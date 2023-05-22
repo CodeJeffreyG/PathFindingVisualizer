@@ -1,12 +1,10 @@
-import React from "react";
+import React, { createContext } from "react";
 
 interface AlgorithmContextProps {
   isAlgorithmRunning: boolean;
-  setAlgorithmRunning: React.Dispatch<React.SetStateAction<boolean>>;
+  setAlgorithmRunning: (running: boolean) => void;
 }
 
-const AlgorithmContext = React.createContext<AlgorithmContextProps | null>(
-  null
-);
+const AlgorithmContext = createContext<AlgorithmContextProps | null>(null);
 
 export default AlgorithmContext;

@@ -1,7 +1,8 @@
+import { useContext } from "react";
+
 import { Node } from "../types/types";
 import { clearGrid } from "./clearGrid";
 import { getStartAndFinishNodes } from "../nodeUtils/findStart&Finish";
-
 import { Bfs } from "./Algos";
 
 export const resetGridAndRunAlgorithm = (
