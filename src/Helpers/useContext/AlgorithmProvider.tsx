@@ -1,12 +1,20 @@
-import React from "react";
-import AlgorithmContext from "./AlgorithmContext";
+import React, { createContext, useState } from "react";
 
-interface AlgorithmProviderProps {
+interface AlgorithmContextProps {
+  isAlgorithmRunning: boolean;
+  setAlgorithmRunning: (running: boolean) => void;
+}
+
+const AlgorithmContext = createContext<AlgorithmContextProps | null>(null);
+
+interface AlgorithmContextProviderProps {
   children: React.ReactNode;
 }
 
-const AlgorithmProvider: React.FC<AlgorithmProviderProps> = ({ children }) => {
-  const [isAlgorithmRunning, setAlgorithmRunning] = React.useState(false);
+const AlgorithmContextProvider: React.FC<AlgorithmContextProviderProps> = ({
+  children,
+}) => {
+  const [isAlgorithmRunning, setAlgorithmRunning] = useState<boolean>(false);
 
   return (
     <AlgorithmContext.Provider
@@ -17,4 +25,4 @@ const AlgorithmProvider: React.FC<AlgorithmProviderProps> = ({ children }) => {
   );
 };
 
-export default AlgorithmProvider;
+export { AlgorithmContext, AlgorithmContextProvider };

@@ -1,16 +1,16 @@
 import React from "react";
-import AlgorithmProvider from "./Helpers/useContext/AlgorithmProvider";
+import { AlgorithmContextProvider } from "./Helpers/useContext/AlgorithmProvider";
 import { Grid } from "./components/Grid/Grid";
 import NavBar from "./components/NavBar/NavBar";
 
 function App() {
   return (
-    <AlgorithmProvider>
+    <AlgorithmContextProvider>
       <div>
         <NavBar />
         <Grid />;
       </div>
-    </AlgorithmProvider>
+    </AlgorithmContextProvider>
   );
 }
 

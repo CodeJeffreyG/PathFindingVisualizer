@@ -9,3 +9,8 @@ export interface Node {
   count: number;
   backTracked: boolean;
 }
+
+export interface AlgorithmContextProps {
+  isAlgorithmRunning?: boolean | null;
+  setAlgorithmRunning: (running: boolean) => void;
+}
